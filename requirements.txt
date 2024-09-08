@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+debugpy
+requests
+llama-index
+llama-index-llms-ollama

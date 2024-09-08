@@ -48,12 +48,12 @@ Start Ollama and its dependencies using Docker Compose:
 
 if gpu is configured
 ```bash
-docker-compose -f docker-compose-ollama-gpu.yaml -d
+docker-compose -f docker-compose-ollama-gpu.yaml up -d
 ```
 
 else
 ```bash
-docker-compose -d
+docker-compose up -d
 ```
 
 Visit [http://localhost:8000](http://localhost:8000) in your browser to access Ollama-webui.
@@ -64,7 +64,7 @@ Change the model/embedding names inside .env.config
 
 ### Explore Langchain/Llamaindex and Ollama
 
-You can explore Langchain/Lamaindex integrations with Ollama within the project. A third container named **app** has been created for this purpose. Inside, you'll find some examples.
+You can explore Langchain/Lamaindex integrations with Ollama within the project. A second container named **app** has been created for this purpose. Inside, you'll find some examples.
 
 ### Devcontainer and Virtual Environment
 

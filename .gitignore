@@ -5,3 +5,4 @@ ollama/
 *.gguf
 *.ggml
 .env.secrets
+.DS_Store

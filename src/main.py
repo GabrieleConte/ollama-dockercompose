@@ -19,8 +19,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-debugpy.listen(("0.0.0.0", 5678))
-
+# debugpy.listen(("0.0.0.0", 5678))
+ 
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root():

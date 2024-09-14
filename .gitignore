@@ -1,24 +1,27 @@
 .dist
-/src/__pycache__
-venv/
-ollama/
+be_chatbot/src/__pycache__
+be_chatbot/**.pyc
+be_chatbot/ollama/
+be_chatbot/venv/
 *.gguf
 *.ggml
-.env.secrets
+be_chatbot/.env.secrets
 .DS_Store
+**/.DS_Store
+**.pyc
 # Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+fe_chatbot/logs
+fe_chatbot/*.log
+fe_chatbot/npm-debug.log*
+fe_chatbot/yarn-debug.log*
+fe_chatbot/yarn-error.log*
+fe_chatbot/pnpm-debug.log*
+fe_chatbot/lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+fe_chatbot/node_modules
+fe_chatbot/dist
+fe_chatbot/dist-ssr
+fe_chatbot/*.local
 
 # Editor directories and files
 .vscode/*
@@ -30,3 +33,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+*.pyc
+be_chatbot/src/__pycache__/*

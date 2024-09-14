@@ -4,8 +4,18 @@ from fastapi.middleware.cors import CORSMiddleware
 from llama_index.llms.ollama import Ollama as LlamaOllama
 from llama_index.core.llms.function_calling import FunctionCallingLLM
 from collections.abc import AsyncGenerator
-import debugpy
+from pydantic import BaseModel
 
+# Define the expected request body structure
+class MessageRequest(BaseModel):
+    message: str
+    
+llm= LlamaOllama(
+    base_url="http://host.docker.internal:7869",
+    model="llama3.1",
+    context_window=8000,
+    request_timeout=360,
+)
 
 app = FastAPI()
 # Allow all origins for CORS (you can customize this based on your requirements)
@@ -31,19 +41,18 @@ async def read_root():
     return HTMLResponse(content=html_content)
 
 
-async def run_llm(question: str, llm: FunctionCallingLLM) -> AsyncGenerator:
+async def run_llm(question: str) -> AsyncGenerator:
     response_iter = llm.stream_complete(question)
     for response in response_iter:
         yield response.delta
 
 
 @app.post("/chat")
-async def chat(message: str):
-    llm = LlamaOllama(
-        base_url="http://host.docker.internal:7869",
-        model="llama3.1",
-        context_window=8000,
-        request_timeout=360,
-    )
+async def chat(request: MessageRequest):
+    
+    message = request.message
     # message = ChatMessage(content=message)
-    return StreamingResponse(run_llm(message, llm), media_type="text/event-stream")
+    return StreamingResponse(run_llm(message), media_type="text/event-stream")
+
+
+

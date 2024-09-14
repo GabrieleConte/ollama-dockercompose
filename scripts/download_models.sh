@@ -28,3 +28,6 @@ echo "🟢 Done!"
 
 # Wait for Ollama process to finish.
 wait $pid
+
+ollama run "$MODEL_NAME"
+ollama run "$EMBEDDING_MODEL_NAME"

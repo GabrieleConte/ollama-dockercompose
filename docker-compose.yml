@@ -1,17 +1,25 @@
 
 services:
+  frontend:
+    build:
+      context: ./fe_chatbot
+    container_name: frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - app
   app:
-    build: .
+    build: ./be_chatbot/ 
     ports:
       - 8000:8000
       - 5678:5678
     volumes:
-      - ./src:/code/src
-      - ./requirements.txt:/code/requirements.txt
+      - ./be_chatbot/src:/code/src
+      - ./be_chatbot/requirements.txt:/code/requirements.txt
     command: uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
     env_file:
-      - .env.config
-      - .env.secrets
+      - ./be_chatbot/.env.config
+      - ./be_chatbot/.env.secrets
     restart: always
     depends_on:
           ollama:
@@ -22,12 +30,12 @@ services:
   ollama:
     image: ollama/ollama:latest
     env_file:
-      - .env.config
+      - ./be_chatbot/.env.config
     ports:
       - 7869:11434
     volumes:
       - ./scripts:/scripts
-      - ./ollama/ollama:/root/.ollama
+      - ./be_chatbot/ollama/ollama:/root/.ollama
     container_name: ollama
     pull_policy: always
     tty: true

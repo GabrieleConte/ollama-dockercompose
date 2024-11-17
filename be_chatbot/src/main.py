@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.responses import HTMLResponse, StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from llama_index.llms.ollama import Ollama as LlamaOllama
+from llama_index.embeddings.ollama import OllamaEmbedding
 from llama_index.core.llms.function_calling import FunctionCallingLLM
 from collections.abc import AsyncGenerator
 from pydantic import BaseModel
@@ -12,10 +13,17 @@ class MessageRequest(BaseModel):
     
 llm= LlamaOllama(
     base_url="http://host.docker.internal:7869",
-    model="llama3.1",
-    context_window=8000,
+    model="nemotron-mini",
+    context_window=16000,
     request_timeout=360,
 )
+
+embedding = OllamaEmbedding(
+    base_url="http://host.docker.internal:7869",
+    model_name="nomic-embed-text",
+    request_timeout=360,
+)
+
 
 app = FastAPI()
 # Allow all origins for CORS (you can customize this based on your requirements)
@@ -45,6 +53,8 @@ async def run_llm(question: str) -> AsyncGenerator:
     response_iter = llm.stream_complete(question)
     for response in response_iter:
         yield response.delta
+        
+    yield str(len(embedding.get_text_embedding(question)))
 
 
 @app.post("/chat")

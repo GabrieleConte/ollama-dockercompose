@@ -6,10 +6,11 @@ const MyChatBot = () => {
     // Function to stream from FastAPI endpoint
     const fastapi_stream = async (params) => {
         try {
-            const response = await fetch('http://host.docker.internal:8000/chat', {
+            const response = await fetch('http://localhost:8000/chat', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'accept': 'application/json'
                 },
                 // Send user input as "message"
                 body: JSON.stringify({ message: params.userInput }),

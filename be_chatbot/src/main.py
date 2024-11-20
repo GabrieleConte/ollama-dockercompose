@@ -13,7 +13,7 @@ class MessageRequest(BaseModel):
     
 llm= LlamaOllama(
     base_url="http://host.docker.internal:7869",
-    model="nemotron-mini",
+    model="llama3.2:3b",
     context_window=16000,
     request_timeout=360,
 )
@@ -27,7 +27,7 @@ embedding = OllamaEmbedding(
 
 app = FastAPI()
 # Allow all origins for CORS (you can customize this based on your requirements)
-origins = ["*"]
+origins = ["http://localhost"]
 
 # Configure CORS middleware
 app.add_middleware(
@@ -54,7 +54,7 @@ async def run_llm(question: str) -> AsyncGenerator:
     for response in response_iter:
         yield response.delta
         
-    yield str(len(embedding.get_text_embedding(question)))
+    #yield str(len(embedding.get_text_embedding(question)))
 
 
 @app.post("/chat")

@@ -6,7 +6,7 @@ const MyChatBot = () => {
     // Function to stream from FastAPI endpoint
     const fastapi_stream = async (params) => {
         try {
-            const response = await fetch('http://localhost:8000/chat', {
+            const response = await fetch('/chat', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -48,7 +48,10 @@ const MyChatBot = () => {
         },
         loop: {
             message: async (params) => {
-                await fastapi_stream(params);
+                await new Promise(async (resolve) => {
+                    await fastapi_stream(params);
+                    resolve();
+                });
             },
             path: () => {
                 if (hasError) {

@@ -8,11 +8,10 @@ services:
       - "80:80"
     depends_on:
       - app
+    networks:
+      - webapp
   app:
     build: ./be_chatbot/ 
-    ports:
-      - 8000:8000
-      - 5678:5678
     volumes:
       - ./be_chatbot/src:/code/src
       - ./be_chatbot/requirements.txt:/code/requirements.txt
@@ -26,13 +25,14 @@ services:
             condition: service_healthy  # Wait until ollama is healthy
     networks:
       - ollama-docker
-
+      - webapp
+    expose:
+      - "8000"
+ 
   ollama:
     image: ollama/ollama:latest
     env_file:
       - ./be_chatbot/.env.config
-    ports:
-      - 7869:11434
     volumes:
       - ./scripts:/scripts
       - ./be_chatbot/ollama/ollama:/root/.ollama
@@ -52,8 +52,12 @@ services:
       start_period: 300s  # Initial delay before health checks start, will timeout after 15 minutes, increase if the model takes longer to load
     networks:
       - ollama-docker
+    expose:
+      - "11434"
 
 networks:
+  webapp:
+    external: false
   ollama-docker:
     external: false
   

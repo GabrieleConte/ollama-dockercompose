@@ -12,14 +12,14 @@ class MessageRequest(BaseModel):
     message: str
     
 llm= LlamaOllama(
-    base_url="http://host.docker.internal:7869",
+    base_url="http://ollama:11434",
     model="llama3.2:3b",
     context_window=16000,
     request_timeout=360,
 )
 
 embedding = OllamaEmbedding(
-    base_url="http://host.docker.internal:7869",
+    base_url="http://ollama:11434",
     model_name="nomic-embed-text",
     request_timeout=360,
 )
@@ -27,7 +27,7 @@ embedding = OllamaEmbedding(
 
 app = FastAPI()
 # Allow all origins for CORS (you can customize this based on your requirements)
-origins = ["http://localhost"]
+origins = ["frontend,ollama"]
 
 # Configure CORS middleware
 app.add_middleware(

@@ -1,6 +1,6 @@
 # Ollama Docker Compose Setup
 
-Welcome to the Ollama Docker Compose Setup! This project simplifies the deployment of Ollama using Docker Compose, making it easy to run Ollama with all its dependencies in a containerized environment.
+This project is a full functioning chatbot service using ollama server as internal service.
 ## Getting Started
 
 ### Prerequisites
@@ -56,8 +56,6 @@ else
 docker-compose up -d
 ```
 
-Visit [http://localhost:8000](http://localhost:8000) in your browser to access Ollama-webui.
-
 ### Model Installation
 
 Change the model/embedding names inside .env.config 
@@ -80,10 +78,8 @@ docker-compose down
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE). Feel free to use, modify, and distribute it according to the terms of the license. Just give me a mention and some credit
+This project is licensed under the [Royalty-Share Open-Source License (RSOSL)](LICENSE). Feel free to use, modify, and distribute it according to the terms of the license. Just give me a mention and some credit
 
 ## Contact
 
-If you have any questions or concerns, please contact us at [gabryconte90@gmail.com](mailto:gabryconte90@gmail.com).
-
-Enjoy using Ollama with Docker Compose! 🐳🚀
+If you have any questions or concerns, please contact me at [gabryconte90@gmail.com](mailto:gabryconte90@gmail.com).

@@ -1,30 +1,41 @@
 
 services:
-  app:
-    build: .
+  frontend:
+    build:
+      context: ./fe_chatbot
+    container_name: frontend
     ports:
-      - 8000:8000
-      - 5678:5678
+      - "80:80"
+    depends_on:
+      - app
+    networks:
+      - webapp
+  app:
+    build: ./be_chatbot/ 
     volumes:
-      - ./src:/code/src
-      - ./requirements.txt:/code/requirements.txt
+      - ./be_chatbot/src:/code/src
+      - ./be_chatbot/requirements.txt:/code/requirements.txt
     command: uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
+    env_file:
+      - ./be_chatbot/.env.config
+      - ./be_chatbot/.env.secrets
     restart: always
     depends_on:
           ollama:
             condition: service_healthy  # Wait until ollama is healthy
     networks:
       - ollama-docker
-      
+      - webapp
+    expose:
+      - "8000"
+ 
   ollama:
     image: ollama/ollama:latest
     env_file:
-      - .env.config
-    ports:
-      - 7869:11434
+      - ./be_chatbot/.env.config
     volumes:
       - ./scripts:/scripts
-      - ./ollama/ollama:/root/.ollama
+      - ./be_chatbot/ollama/ollama:/root/.ollama
     container_name: ollama
     pull_policy: always
     tty: true
@@ -34,13 +45,15 @@ services:
       - OLLAMA_HOST=0.0.0.0
     entrypoint: ["/usr/bin/bash", "/scripts/download_models.sh"] # Download the model
     healthcheck:
-      test : ["CMD","./scripts/healthcheck.sh"]  # Example health check command
+      test : ["CMD",/usr/bin/bash,"./scripts/healthcheck.sh"]  # Example health check command
       interval: 60s  # Check every 30 seconds
       timeout: 5s    # Timeout for each check
       retries: 10   # will timeout after 3 retries
       start_period: 300s  # Initial delay before health checks start, will timeout after 15 minutes, increase if the model takes longer to load
     networks:
       - ollama-docker
+    expose:
+      - "11434"
     deploy:
       resources:
         reservations:
@@ -49,7 +62,9 @@ services:
               count: 1
               capabilities: [gpu]
 
-
 networks:
+  webapp:
+    external: false
   ollama-docker:
     external: false
+  

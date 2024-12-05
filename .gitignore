@@ -3,6 +3,7 @@ be_chatbot/src/__pycache__
 be_chatbot/**.pyc
 be_chatbot/ollama/
 be_chatbot/venv/
+be_chatbot/src/data/*
 *.gguf
 *.ggml
 be_chatbot/.env.secrets
